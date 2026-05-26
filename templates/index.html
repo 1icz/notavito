@@ -1,0 +1,49 @@
+﻿{% extends 'base.html' %}
+
+{% block title %}Главная - NotAvito{% endblock %}
+
+{% block content %}
+<!-- БАННЕР НА ВСЮ ШИРИНУ -->
+<div style="width: 100vw; position: relative; left: 50%; right: 50%; margin-left: -50vw; margin-right: -50vw;">
+    <img src="/static/images/banner.png" alt="NotAvito Баннер" style="width: 100%; height: 300px; object-fit: cover;">
+</div>
+
+<!-- ОСТАЛЬНОЙ КОНТЕНТ -->
+<div style="text-align: center; padding: 40px 20px; background-color: #f9f9f9; border-radius: 16px; margin: 30px 0;">
+    <h1 style="font-size: 32px; margin-bottom: 20px;">
+        Устали от Avito? Добро пожаловать на NotAvito.
+    </h1>
+    <p style="font-size: 18px; color: #666; margin-bottom: 30px;">
+        Здесь вы не купите кота в мешке, а продавец ответит вам не робот.<br>
+        Простые объявления для реальных людей.
+    </p>
+    <a href="{% url 'ad_list' %}" class="btn btn-primary" style="font-size: 18px; padding: 15px 40px;">
+        К каталогу
+    </a>
+</div>
+
+<div style="margin-top: 40px;">
+    <h2 style="text-align: center; margin-bottom: 30px;">Последние объявления</h2>
+    <div class="ads-grid">
+        {% for ad in recent_ads %}
+        <div class="ad-card">
+            {% if ad.image %}
+            <div class="ad-image">
+                <img src="{{ ad.image.url }}" alt="{{ ad.title }}">
+            </div>
+            {% else %}
+            <div class="ad-image" style="display: flex; align-items: center; justify-content: center; font-size: 48px;">
+                📷
+            </div>
+            {% endif %}
+            <div class="ad-title">{{ ad.title }}</div>
+            <div class="ad-price">{{ ad.price|default:"Цена не указана" }} ₽</div>
+            <div class="ad-meta">{{ ad.created_at|date:"d.m.Y" }} | {{ ad.views_count }} просмотров</div>
+            <a href="{% url 'ad_detail' ad.pk %}" class="btn btn-primary" style="margin-top: 10px;">Подробнее</a>
+        </div>
+        {% empty %}
+        <p style="text-align: center;">Пока нет объявлений. <a href="{% url 'ad_create' %}">Создайте первое!</a></p>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

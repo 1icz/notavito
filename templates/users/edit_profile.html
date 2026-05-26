@@ -1,0 +1,112 @@
+{% extends 'base.html' %}
+
+{% block title %}Редактирование профиля - NotAvito{% endblock %}
+
+{% block content %}
+<div style="max-width: 600px; margin: 0 auto;">
+    <!-- Сообщения об успехе/ошибке -->
+    {% if messages %}
+        {% for message in messages %}
+        <div class="alert alert-{{ message.tags }}" style="padding: 12px; border-radius: 8px; margin-bottom: 20px;">
+            {{ message }}
+        </div>
+        {% endfor %}
+    {% endif %}
+    
+    <!-- Редактирование профиля -->
+    <div style="background-color: #f5f5f5; border-radius: 16px; padding: 30px; margin-bottom: 30px;">
+        <h2 style="text-align: center; margin-bottom: 30px;">👤 Редактирование профиля</h2>
+        
+        <form method="post">
+            {% csrf_token %}
+            
+            <div class="form-group">
+                <label for="id_username">Имя пользователя</label>
+                <input type="text" name="username" id="id_username" 
+                       value="{{ user_form.username.value|default:'' }}"
+                       style="width: 100%; padding: 12px; border: 2px solid #ddd; border-radius: 8px; font-size: 16px;">
+                {% if user_form.username.errors %}
+                <div style="color: red; margin-top: 5px;">{{ user_form.username.errors }}</div>
+                {% endif %}
+            </div>
+            
+            <div class="form-group">
+                <label for="id_email">Email</label>
+                <input type="email" name="email" id="id_email" 
+                       value="{{ user_form.email.value|default:'' }}"
+                       style="width: 100%; padding: 12px; border: 2px solid #ddd; border-radius: 8px; font-size: 16px;">
+                {% if user_form.email.errors %}
+                <div style="color: red; margin-top: 5px;">{{ user_form.email.errors }}</div>
+                {% endif %}
+            </div>
+            
+            <button type="submit" name="update_profile" class="btn btn-primary" style="width: 100%; padding: 12px; font-size: 16px;">
+                💾 Сохранить изменения
+            </button>
+        </form>
+    </div>
+    
+    <!-- Смена пароля -->
+    <div style="background-color: #f5f5f5; border-radius: 16px; padding: 30px;">
+        <h2 style="text-align: center; margin-bottom: 30px;">🔑 Смена пароля</h2>
+        
+        <form method="post">
+            {% csrf_token %}
+            
+            <div class="form-group">
+                <label for="id_old_password">Старый пароль</label>
+                <input type="password" name="old_password" id="id_old_password" 
+                       style="width: 100%; padding: 12px; border: 2px solid #ddd; border-radius: 8px; font-size: 16px;">
+                {% if password_form.old_password.errors %}
+                <div style="color: red; margin-top: 5px;">{{ password_form.old_password.errors }}</div>
+                {% endif %}
+            </div>
+            
+            <div class="form-group">
+                <label for="id_new_password1">Новый пароль</label>
+                <input type="password" name="new_password1" id="id_new_password1" 
+                       style="width: 100%; padding: 12px; border: 2px solid #ddd; border-radius: 8px; font-size: 16px;">
+                <small style="color: #666;">Минимум 8 символов</small>
+                {% if password_form.new_password1.errors %}
+                <div style="color: red; margin-top: 5px;">{{ password_form.new_password1.errors }}</div>
+                {% endif %}
+            </div>
+            
+            <div class="form-group">
+                <label for="id_new_password2">Подтверждение нового пароля</label>
+                <input type="password" name="new_password2" id="id_new_password2" 
+                       style="width: 100%; padding: 12px; border: 2px solid #ddd; border-radius: 8px; font-size: 16px;">
+                {% if password_form.new_password2.errors %}
+                <div style="color: red; margin-top: 5px;">{{ password_form.new_password2.errors }}</div>
+                {% endif %}
+            </div>
+            
+            <button type="submit" name="change_password" class="btn btn-primary" style="width: 100%; padding: 12px; font-size: 16px;">
+                🔒 Сменить пароль
+            </button>
+        </form>
+    </div>
+    
+    <div style="text-align: center; margin-top: 20px;">
+        <a href="{% url 'account' %}" class="btn btn-secondary">← Вернуться в профиль</a>
+    </div>
+</div>
+
+<style>
+    .form-group {
+        margin-bottom: 20px;
+    }
+    
+    .form-group label {
+        display: block;
+        margin-bottom: 8px;
+        font-weight: 600;
+    }
+    
+    .form-group input:focus {
+        border-color: #555 !important;
+        outline: none;
+        box-shadow: 0 0 5px rgba(85,85,85,0.3);
+    }
+</style>
+{% endblock %}

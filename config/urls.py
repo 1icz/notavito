@@ -3,6 +3,7 @@ from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
 from ads import views as ads_views
+from users import views as users_views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -15,6 +16,7 @@ urlpatterns = [
     path('my-ads/', ads_views.my_ads, name='my_ads'),
     path('account/', include('users.urls')),
     path('accounts/', include('django.contrib.auth.urls')),
+    path('signup/', users_views.signup, name='signup'),
 ]
 
 if settings.DEBUG:

@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+
+{% block title %}Регистрация - NotAvito{% endblock %}
+
+{% block content %}
+<div class="form-container">
+    <h2 style="text-align: center; margin-bottom: 30px;">📝 Регистрация</h2>
+    
+    <form method="post">
+        {% csrf_token %}
+        
+        <div class="form-group">
+            <label for="id_username">Имя пользователя</label>
+            <input type="text" name="username" id="id_username" class="form-control" required style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 8px;">
+            <small style="color: #666;">Обязательное поле. Не более 150 символов.</small>
+            {% if form.username.errors %}
+            <div class="errorlist" style="color: red; margin-top: 5px;">{{ form.username.errors }}</div>
+            {% endif %}
+        </div>
+        
+        <div class="form-group">
+            <label for="id_email">Email</label>
+            <input type="email" name="email" id="id_email" class="form-control" required style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 8px;">
+            {% if form.email.errors %}
+            <div class="errorlist" style="color: red; margin-top: 5px;">{{ form.email.errors }}</div>
+            {% endif %}
+        </div>
+        
+        <div class="form-group">
+            <label for="id_password1">Пароль</label>
+            <input type="password" name="password1" id="id_password1" class="form-control" required style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 8px;">
+            <small style="color: #666;">Пароль должен содержать не менее 8 символов.</small>
+            {% if form.password1.errors %}
+            <div class="errorlist" style="color: red; margin-top: 5px;">{{ form.password1.errors }}</div>
+            {% endif %}
+        </div>
+        
+        <div class="form-group">
+            <label for="id_password2">Подтверждение пароля</label>
+            <input type="password" name="password2" id="id_password2" class="form-control" required style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 8px;">
+            {% if form.password2.errors %}
+            <div class="errorlist" style="color: red; margin-top: 5px;">{{ form.password2.errors }}</div>
+            {% endif %}
+        </div>
+        
+        <button type="submit" class="btn btn-primary" style="width: 100%;">Зарегистрироваться</button>
+    </form>
+    
+    <p style="margin-top: 20px; text-align: center;">
+        Уже есть аккаунт? <a href="{% url 'login' %}">Войдите</a>
+    </p>
+</div>
+{% endblock %}

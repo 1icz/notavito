@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+
+{% block title %}Удалить объявление - NotAvito{% endblock %}
+
+{% block content %}
+<div class="form-container" style="text-align: center;">
+    <h2>Удалить объявление?</h2>
+    <p style="margin: 20px 0;">Вы уверены, что хотите удалить <strong>"{{ ad.title }}"</strong>?</p>
+    <p style="color: red; margin-bottom: 20px;">Это действие нельзя отменить!</p>
+    
+    <form method="post">
+        {% csrf_token %}
+        <div style="display: flex; gap: 10px; justify-content: center;">
+            <button type="submit" class="btn btn-danger">Да, удалить</button>
+            <a href="{% url 'ad_detail' ad.pk %}" class="btn btn-secondary">Отмена</a>
+        </div>
+    </form>
+</div>
+{% endblock %}

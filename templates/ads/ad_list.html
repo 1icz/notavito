@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+
+{% block title %}Каталог - NotAvito{% endblock %}
+
+{% block content %}
+<h1 style="margin-bottom: 20px;">Каталог объявлений</h1>
+
+<!-- Поиск и фильтр -->
+<div style="background-color: #f5f5f5; padding: 20px; border-radius: 12px; margin-bottom: 30px;">
+    <form method="get" style="display: flex; gap: 10px; flex-wrap: wrap;">
+        <input type="text" name="q" placeholder="Поиск по заголовку или тексту..." value="{{ query }}" style="flex: 2; padding: 12px; border: 1px solid #ddd; border-radius: 8px;">
+        <select name="category" style="flex: 1; padding: 12px; border: 1px solid #ddd; border-radius: 8px;">
+            <option value="">Все категории</option>
+            {% for cat in categories %}
+            <option value="{{ cat.slug }}" {% if selected_category == cat.slug %}selected{% endif %}>
+                {{ cat.name }}
+            </option>
+            {% endfor %}
+        </select>
+        <button type="submit" class="btn btn-primary">Найти</button>
+    </form>
+</div>
+
+<div class="ads-grid">
+    {% for ad in ads %}
+    <div class="ad-card">
+        {% if ad.image %}
+        <div class="ad-image">
+            <img src="{{ ad.image.url }}" alt="{{ ad.title }}">
+        </div>
+        {% else %}
+        <div class="ad-image" style="display: flex; align-items: center; justify-content: center; font-size: 48px;">
+            📷
+        </div>
+        {% endif %}
+        <div class="ad-title">{{ ad.title }}</div>
+        <div class="ad-price">{{ ad.price|default:"Цена не указана" }} ₽</div>
+        <div class="ad-meta">
+            {{ ad.created_at|date:"d.m.Y" }} | {{ ad.views_count }} просмотров<br>
+            Категория: {{ ad.category.name|default:"Без категории" }}
+        </div>
+        <a href="{% url 'ad_detail' ad.pk %}" class="btn btn-primary" style="margin-top: 10px;">Подробнее</a>
+    </div>
+    {% empty %}
+    <p style="text-align: center; grid-column: 1/-1;">Объявлений не найдено</p>
+    {% endfor %}
+</div>
+{% endblock %}

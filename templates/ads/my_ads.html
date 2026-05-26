@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+
+{% block title %}Мои объявления - NotAvito{% endblock %}
+
+{% block content %}
+<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px;">
+    <h1>Мои объявления</h1>
+    <a href="{% url 'ad_create' %}" class="btn btn-primary">+ Создать объявление</a>
+</div>
+
+<div class="ads-grid">
+    {% for ad in ads %}
+    <div class="ad-card">
+        {% if ad.image %}
+        <div class="ad-image">
+            <img src="{{ ad.image.url }}" alt="{{ ad.title }}">
+        </div>
+        {% else %}
+        <div class="ad-image" style="display: flex; align-items: center; justify-content: center; font-size: 48px;">
+            📷
+        </div>
+        {% endif %}
+        <div class="ad-title">{{ ad.title }}</div>
+        <div class="ad-price">{{ ad.price|default:"Цена не указана" }} ₽</div>
+        <div class="ad-meta">
+            Статус: {% if ad.is_active %}✅ Активно{% else %}❌ Снято{% endif %}<br>
+            {{ ad.created_at|date:"d.m.Y" }} | {{ ad.views_count }} просмотров
+        </div>
+        <div style="display: flex; gap: 10px; margin-top: 15px;">
+            <a href="{% url 'ad_edit' ad.pk %}" class="btn btn-primary">✏️ Редактировать</a>
+            <a href="{% url 'ad_delete' ad.pk %}" class="btn btn-danger">🗑️ Удалить</a>
+        </div>
+    </div>
+    {% empty %}
+    <p style="text-align: center; grid-column: 1/-1;">У вас пока нет объявлений. <a href="{% url 'ad_create' %}">Создать первое объявление</a></p>
+    {% endfor %}
+</div>
+{% endblock %}
